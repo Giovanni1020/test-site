@@ -351,7 +351,7 @@ if($_SESSION && $_SESSION['validity']==1){
 if($_SESSION && $_SESSION['validity']==1){
 ?>
 
-    <div class="card" style="display:width: 100%;" id="status" >
+    <div class="card" style="display:block;width: 100%;" id="status" >
 
       <h3>Your current status:</h3>
 
