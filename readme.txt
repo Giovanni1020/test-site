@@ -1,2 +1,2 @@
 login: admin
-senha: admin
+Password: admin
