@@ -147,7 +147,7 @@ if($_SESSION && $_SESSION['validity']==1){
 
         Do you want to create a account? 
 
-        <a href="">Click here to create a new account</a>
+        <a href="createacc.php">Click here to create a new account</a>
 
       </p>
     </div>

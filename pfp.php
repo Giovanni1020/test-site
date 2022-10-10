@@ -54,18 +54,19 @@ if($_SESSION && $_SESSION['validity']==1){
 
     <div class="card" style="width: 100%;">
       <center> <h1> Customize your account </h1> </center>
-      <center><h2>Current status:</h2>
+      <center><h2>Current status:</h2></center>
 
       <h4><p id="statustxt"> No status currently</h4> </p><br>
       <input type="text" placeholder="New status" id="newstatus">
       <button type="button" onclick="changestatus()">Confirm</button> 
 
-
-      <p>No profile picture currently (Doesn't work)</a></p><br>
-      <input type="file">
-      <button type="button"> Confirm</button>
-
-      <p>last update at: 21/08/22 </p><br>
+<form name="pfp_form" action="" method="post" enctype="multipart/form-data">
+      <label>Profile picture: <br></label>
+      <input type="file" name="pfp">
+      <input type="submit" placeholder="Confirm">
+</form>
+      <br>
+      Your profile picture: <br>
       <br>
       <a href="logout.php"> Click here to log out</a>
       </center>
@@ -117,7 +118,7 @@ if($_SESSION && $_SESSION['validity']==1){
 
         Do you want to create a account? 
 
-        <a href="">Click here to create a new account</a>
+        <a href="createacc.php">Click here to create a new account</a>
 
       </p>
     </div>
@@ -145,7 +146,7 @@ if($_SESSION && $_SESSION['validity']==1){
 
       <h3>Your current status:</h3>
 
-      <p>You don't have any status currently</p>
+      <p id="statustxt2">You don't have any status currently</p>
 
     </div>
 <?php
@@ -287,7 +288,7 @@ if($_SESSION && $_SESSION['validity']==1){
 
         Do you want to create a account? 
 
-        <a href="">Click here to create a new account</a>
+        <a href="createacc.php">Click here to create a new account</a>
 
       </p>
     </div>
