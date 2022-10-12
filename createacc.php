@@ -61,7 +61,7 @@
         </div>
       <?php } else { ?>
         <div class="card">
-          <form name="newacc" method="post" action="newacc.php">
+          <form name="newacc" method="post" action="newacc.php" enctype="multipart/form-data">
             <label>Type your name: </label><br>
             <center>
               <input type="text" placeholder="Name" name="realname" required><br>
@@ -77,7 +77,9 @@
             <label>Type your phone number: </label><br>
             <input type="number" placeholder="Cellphone number" name="phone" required> <br> <br>
             <label>Type your E-Mail: </label><br>
-            <input type="email" placeholder="E-Mail" name="email" required><br> <br>
+            <input type="email" placeholder="E-Mail" name="email" required><br><br>
+            <label> Inser a profile picture: </label><br>
+            <input type="file" placeholder="Profile picture" name="pfp" required> <br><br>
             <center>
               <img src="img/terms.jpg" style="width:100%"><br> <br>
               <input type="checkbox" required> I agree to the Terms & Conditions. <br><br>
