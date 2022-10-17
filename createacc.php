@@ -38,6 +38,9 @@
     <a href="pfp.php">
       <h3> Profile </h3>
     </a>
+    <a href="chat.php">
+      <h3> Chat </h3>
+    </a>
 
     <div class="button">
       <input type="button" value="Search">
@@ -94,9 +97,9 @@
       <?php if ($_SESSION && $_SESSION["validity"] == 1) { ?>
         <div class="card" id="logged" style="width: 100%; height: auto;">
 
-          <center>
-            <h2> You're logged in! </h2> <br> Wellcome admin
-          </center>
+          <?php
+          echo "<center><h2> You're logged in! </h2> <br> Wellcome " . $_SESSION['login'] . "</center>";
+          ?>
 
           <center> <a href="logout.php">Click here to logout</a></center>
 
