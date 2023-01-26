@@ -1,23 +1,27 @@
 <?php
-$img = $_FILES['pfp']['name'];
-$acc = "acc.txt";
-$image = $_POST['pfp'];
-$imagename = $_FILES['pfp']['name'];
-$imagetype = $_FILES['pfp']['type'];
-$imageerror = $_FILES['pfp']['error'];
-$imagetemp = $_FILES['pfp']['tmp_name'];
-$imagePath = "img/";
-if (is_uploaded_file($imagetemp)) {
-    if (move_uploaded_file($imagetemp, $imagePath . $imagename)) {
-        $newacc = $_POST['realname'] . "/" . $_POST['username'] . "/" . $_POST['newpass'] . "/" . $_POST['phone'] . "/" . $_POST['email'] . "/" . $img . "*";
-        $fp = fopen($acc, "a+");
-        fwrite($fp, $newacc);
-        fwrite($fp, "\r\n");
-        fclose($fp);
-        header("Location: index.php");
-    } else {
-        echo "Failed to create a account";
-    }
+$ip = "localhost";
+$user = "root";
+$password = "";
+$data_base = "test-site";
+$connection = new mysqli($ip, $user, $password, $data_base);
+/* if ($connection->connect_error) {
+    die("connection failed: ") . $connection->connect_error;
 } else {
-    echo "Failed to crete a account";
-}
+    echo "connected <br>";
+} */
+$image = $_FILES['pfp'];
+$imagename = $_FILES['pfp']['name'];
+
+$imagePath = "img/";
+$dir = "C://xampp/htdocs/test-site/img/" . $imagename;
+$img = $_FILES['pfp']['name'];
+$name = $_POST['realname'];
+$username = $_POST['username'];
+$pass = md5($_POST['newpass']);
+$phone = $_POST['phone'];
+$email = $_POST['email'];
+$action = "INSERT INTO users (realname, username, pass, phone, pfp, email) VALUES ('$name', '$username', '$pass', '$phone', '$imagename', '$email')";
+$result = $connection->query($action);
+$action2 = "INSERT INTO profile (pfp,user) values ('$imagename','$username')";
+$result2 = $connection->query($action2);
+header("Location: index.php");

@@ -1,31 +1,32 @@
 <?php
 $img = $_FILES['imgupload']['name'];
-$gallery = "gallery.txt";
-$image = $_POST['imgupload'];
 $imagename = $_FILES['imgupload']['name'];
 $imagetype = $_FILES['imgupload']['type'];
 $imageerror = $_FILES['imgupload']['error'];
 $imagetemp = $_FILES['imgupload']['tmp_name'];
 $imagePath = "img/";
+$desc = $_POST['imgdesc'];
+$ip = "localhost";
+$user = "root";
+$password = "";
+$data_base = "test-site";
+$connection = new mysqli($ip, $user, $password, $data_base);
+$user_id = $_GET['user_id'];
+$action = "SELECT username FROM users where id='$user_id'";
+$result = $connection->query($action);
+$line = mysqli_fetch_assoc($result);
+$usr = $line['username'];
 
 if (is_uploaded_file($imagetemp)) {
     if (move_uploaded_file($imagetemp, $imagePath . $imagename)) {
-        $reset = $_POST['reset'];
-        if (isset($reset)) {
-            $gallerysave = $_POST['imgdesc'] . "/" . $img . "*";
-            $fp = fopen($gallery, "w");
-            fwrite($fp, $gallerysave);
-            fwrite($fp, "\r\n");
-            fclose($fp);
-            header("Location: gallery.php");
-        } else {
-            $gallerysave = $_POST['imgdesc'] . "/" . $img . "*";
-            $fp = fopen($gallery, "a+");
-            fwrite($fp, $gallerysave);
-            fwrite($fp, "\r\n");
-            fclose($fp);
-            header("Location: gallery.php");
-        }
+        $ip = "localhost";
+        $user = "root";
+        $password = "";
+        $data_base = "test-site";
+        $connection = new mysqli($ip, $user, $password, $data_base);
+        $action = "INSERT INTO gallery (img, description,user) VALUES ('$imagename', '$desc','$usr')";
+        $result = $connection->query($action);
+        header("Location: gallery.php");
     } else {
         echo "Failed to upload the image";
     }

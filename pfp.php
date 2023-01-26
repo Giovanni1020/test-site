@@ -46,6 +46,15 @@ if ($_SESSION && $_SESSION['validity'] == 1) {
       <a href="chat.php">
         <h3> Chat </h3>
       </a>
+
+      <a href="users.php">
+        <h3> Users </h3>
+      </a>
+
+      <a href="friends.php">
+        <h3> Friends </h3>
+      </a>
+
       <div class="button">
         <input type="button" value="Search">
       </div>
@@ -61,7 +70,7 @@ if ($_SESSION && $_SESSION['validity'] == 1) {
 
           <div id="customize" style="display:block;width: 100%;">
 
-            <div class="card" style="width: 100%;">
+            <div class="card">
               <center>
                 <h1> Customize your account </h1>
               </center>
@@ -70,32 +79,63 @@ if ($_SESSION && $_SESSION['validity'] == 1) {
               </center>
 
               <h4>
-                <p id="statustxt"> No status currently
+                <?php
+                $ip = "localhost";
+                $user = "root";
+                $password = "";
+                $data_base = "test-site";
+                $connection = new mysqli($ip, $user, $password, $data_base);
+                $user = $_SESSION['login'];
+                $action = "SELECT * FROM profile WHERE user='$user'";
+                $result = $connection->query($action);
+                $line = mysqli_fetch_assoc($result);
+                $status = $line['status'];
+                echo $status;
+                ?>
               </h4>
               </p><br>
-              <input type="text" placeholder="New status" id="newstatus">
-              <button type="button" onclick="changestatus()">Confirm</button>
+              <form action='newstatus.php' method='post'>
+                <input type="text" placeholder="New status" name="newstatus" maxlength="195" required>
+                <input type='submit'>
+              </form>
               <br>
               Your profile picture: <br>
               <?php
-              $acc = "acc.txt";
-              $fp = file_get_contents($acc);
-              $vet = explode("*", $fp);
-
-              for ($i = 0; $i < sizeof($vet) - 1; $i++) {
-                $users = explode("/", $vet[$i]);
-                if ($users[1] == $_SESSION['login']) {
-                  echo "<center><img src='img/$users[5]' style='display: block; width: 30%; height: 50%;border-radius: 45%;border:solid 5px black;'></center>";
-                }
-              }
+              echo "<center><img src='img/" . $_SESSION['pfp'] . "' style='display: block; width: 30%; height: 50%;border-radius: 45%;border:solid 5px black;'></center>";
               ?>
               <br>
-              <a href="logout.php"> Click here to log out</a>
               </center>
 
 
             </div>
           </div>
+        </div>
+        <div class='card'>
+          <Center>
+            <h2> Your profile description: </h2>
+          </Center><br><br>
+          <form method='post' action="newdesc.php">
+            <label> Type a new description for your profile: </label><br>
+            <Input type='text' name='newdesc' maxlength="500" placeholder='New description' required>
+            <input type='submit'>
+          </form><br><br>
+
+          Your current description:<br><br>
+          <?php
+          $ip = "localhost";
+          $user = "root";
+          $password = "";
+          $data_base = "test-site";
+          $connection = new mysqli($ip, $user, $password, $data_base);
+          $user = $_SESSION['login'];
+          $action = "SELECT * FROM profile WHERE user='$user'";
+          $result = $connection->query($action);
+          $line = mysqli_fetch_assoc($result);
+          $desc = $line['description'];
+          echo $desc;
+          ?>
+
+
         </div>
       </div>
 
@@ -178,14 +218,26 @@ if ($_SESSION && $_SESSION['validity'] == 1) {
 
             <h3>Your current status:</h3>
 
-            <p id="statustxt2">You don't have any status currently</p>
+            <?php
+            $ip = "localhost";
+            $user = "root";
+            $password = "";
+            $data_base = "test-site";
+            $connection = new mysqli($ip, $user, $password, $data_base);
+            $user = $_SESSION['login'];
+            $action = "SELECT * FROM profile WHERE user='$user'";
+            $result = $connection->query($action);
+            $line = mysqli_fetch_assoc($result);
+            $status = $line['status'];
+            echo $status;
+            ?>
 
           </div>
         <?php
         } else {
         ?>
 
-          <div class="card" id="nostatus">
+          <div class="card">
 
             <h3>Here you can see your status</h3>
 
@@ -262,6 +314,15 @@ if ($_SESSION && $_SESSION['validity'] == 1) {
       <a href="chat.php">
         <h3> Chat </h3>
       </a>
+
+      <a href="users.php">
+        <h3> Users </h3>
+      </a>
+
+      <a href="friends.php">
+        <h3> Friends </h3>
+      </a>
+
       <div class="button">
         <input type="button" value="Search">
       </div>
@@ -366,7 +427,20 @@ if ($_SESSION && $_SESSION['validity'] == 1) {
 
             <h3>Your current status:</h3>
 
-            <p>You don't have any status currently</p>
+
+            <?php
+            $ip = "localhost";
+            $user = "root";
+            $password = "";
+            $data_base = "test-site";
+            $connection = new mysqli($ip, $user, $password, $data_base);
+            $user = $_SESSION['login'];
+            $action = "SELECT * FROM profile WHERE user='$user'";
+            $result = $connection->query($action);
+            $line = mysqli_fetch_assoc($result);
+            $status = $line['status'];
+            echo $status;
+            ?>
 
           </div>
         <?php

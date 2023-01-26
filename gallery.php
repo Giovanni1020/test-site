@@ -47,6 +47,14 @@ if ($_SESSION && $_SESSION['validity'] == 1) {
         <h3> Chat </h3>
       </a>
 
+      <a href="users.php">
+        <h3> Users </h3>
+      </a>
+
+      <a href="friends.php">
+        <h3> Friends </h3>
+      </a>
+
       <div class="button">
         <input type="button" value="Search">
       </div>
@@ -63,144 +71,65 @@ if ($_SESSION && $_SESSION['validity'] == 1) {
 
           <center>
             <h2> Upload your images: </h2>
-            <form name="galleryupload" method="post" action="galleryupload.php" enctype="multipart/form-data">
-              <label> Insert the image you want to upload here: </label><br><br>
-              <input type="file" placeholder="Image" name="imgupload" required>
-              <p>
-                <label> Insert a description for your image: </label> <br>
-                <input type="text" placeholder="Description" name="imgdesc" required><br>
-                <input type="checkbox" name="reset">
-                <label>Reset your images? </label><br>
-                <input type="submit">
-            </form>
+            <?php
+            $user_id = $_SESSION['id'];
+            echo "<form name='galleryupload' method='post' enctype='multipart/form-data' action='galleryupload.php?user_id=$user_id'>";
+            ?>
+            <label> Insert the image you want to upload here: </label><br><br>
+            <input type="file" placeholder="Image" name="imgupload" required>
+            <p>
+              <label> Insert a description for your image: </label> <br>
+              <input type="text" placeholder="Description" name="imgdesc" required><br>
+              <input type="submit">
+              </form>
           </center>
           <br><br>
 
 
         </div>
 
-        <div class="card" style="height:450">
+        <div class="card" style="height:550">
 
           <h2>Your images</h2>
 
-          <div class="responsive">
 
-            <div class="gallery">
-
-
-              <?php
-              $gallery = "gallery.txt";
-              $fp = file_get_contents($gallery);
-              $vet = explode("*", $fp);
-              if (isset($vet[0])) {
-                $images = explode("/", $vet[0]);
-                if (isset($images[1])) {
-                  echo "<center><img src='img/$images[1]' width='600' height='400'></center>";
-                  echo "<div class='desc'>$images[0]</div>";
-                } else {
-                  echo "<center><h2> No image saved</h2></center>";
-                }
-              } else {
-                echo "<center><h2> No image saved</h2></center>";
+          <?php
+          $ip = "localhost";
+          $user = "root";
+          $password = "";
+          $data_base = "test-site";
+          $connection = new mysqli($ip, $user, $password, $data_base);
+          $usr_check = $_SESSION['login'];
+          $action = "select * from gallery where user='$usr_check'";
+          $result = $connection->query($action);
+          for ($i = 0; $i < 8; $i++) {
+            $line = mysqli_fetch_assoc($result);
+            if (isset($line)) {
+              $img_id = $line['id'];
+              $img = $line['img'];
+              $desc = $line['description'];
+              $usr = $line['user'];
+              echo "<div class='responsive'> <div class='gallery'>";
+              echo "<img src='img/$img' style='width:100%; height:100%;'>";
+              echo "<div class='desc'> $desc</div>";
+              echo "<center><a href='delete_img.php?img_id=$img_id'> <button type> delete</button> </a></center>";
+              echo "</div> </div>";
+              if ($i == 3) {
+                echo "<div class='clearfix'></div> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> ";
               }
-              ?>
-
-
-
-
-            </div>
-
-          </div>
-
-
-
-
-
-          <div class="responsive">
-
-            <div class="gallery">
-
-
-
-              <?php
-              $gallery = "gallery.txt";
-              $fp = file_get_contents($gallery);
-              $vet = explode("*", $fp);
-              if (isset($vet[1])) {
-                $images = explode("/", $vet[1]);
-                if (isset($images[1])) {
-                  echo "<center><img src='img/$images[1]' width='600' height='400'></center>";
-                  echo "<div class='desc'>$images[0]</div>";
-                } else {
-                  echo "<center><h2> No image saved</h2></center>";
-                }
-              } else {
-                echo "<center><h2> No image saved</h2></center>";
+            } else {
+              echo "<div class='responsive'> <div class='gallery'>";
+              echo "<center><h2>No image yet</h2></center>";
+              echo "</div> </div>";
+              if ($i == 3) {
+                echo "<div class='clearfix'></div> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> ";
               }
-              ?>
-
-
-            </div>
-
-          </div>
+            }
+          }
+          ?>
 
 
 
-          <div class="responsive">
-
-            <div class="gallery">
-
-
-
-              <?php
-              $gallery = "gallery.txt";
-              $fp = file_get_contents($gallery);
-              $vet = explode("*", $fp);
-              if (isset($vet[2])) {
-                $images = explode("/", $vet[2]);
-                if (isset($images[1])) {
-                  echo "<center><img src='img/$images[1]' width='600' height='400'></center>";
-                  echo "<div class='desc'>$images[0]</div>";
-                } else {
-                  echo "<center><h2> No image saved</h2></center>";
-                }
-              } else {
-                echo "<center><h2> No image saved</h2></center>";
-              }
-              ?>
-
-            </div>
-
-          </div>
-
-
-
-          <div class="responsive">
-
-            <div class="gallery">
-
-
-
-              <?php
-              $gallery = "gallery.txt";
-              $fp = file_get_contents($gallery);
-              $vet = explode("*", $fp);
-              if (isset($vet[3])) {
-                $images = explode("/", $vet[3]);
-                if (isset($images[1])) {
-                  echo "<center><img src='img/$images[1]' width='600' height='400'></center>";
-                  echo "<div class='desc'>$images[0]</div>";
-                } else {
-                  echo "<center><h2> No image saved</h2></center>";
-                }
-              } else {
-                echo "<center><h2> No image saved</h2></center>";
-              }
-              ?>
-
-            </div>
-
-          </div>
 
 
 
@@ -210,115 +139,11 @@ if ($_SESSION && $_SESSION['validity'] == 1) {
         <div class="card" style="height:450">
 
 
-          <div class="responsive">
-
-            <div class="gallery">
-
-              <?php
-              $gallery = "gallery.txt";
-              $fp = file_get_contents($gallery);
-              $vet = explode("*", $fp);
-              if (isset($vet[4])) {
-                $images = explode("/", $vet[4]);
-                if (isset($images[1])) {
-                  echo "<center><img src='img/$images[1]' width='600' height='400'></center>";
-                  echo "<div class='desc'>$images[0]</div>";
-                } else {
-                  echo "<center><h2> No image saved</h2></center>";
-                }
-              } else {
-                echo "<center><h2> No image saved</h2></center>";
-              }
-              ?>
-            </div>
-
-          </div>
 
 
 
 
 
-          <div class="responsive">
-
-            <div class="gallery">
-
-
-              <?php
-              $gallery = "gallery.txt";
-              $fp = file_get_contents($gallery);
-              $vet = explode("*", $fp);
-              if (isset($vet[5])) {
-                $images = explode("/", $vet[5]);
-                if (isset($images[1])) {
-                  echo "<center><img src='img/$images[1]' width='600' height='400'></center>";
-                  echo "<div class='desc'>$images[0]</div>";
-                } else {
-                  echo "<center><h2> No image saved</h2></center>";
-                }
-              } else {
-                echo "<center><h2> No image saved</h2></center>";
-              }
-              ?>
-
-            </div>
-
-          </div>
-
-
-
-          <div class="responsive">
-
-            <div class="gallery">
-
-
-              <?php
-              $gallery = "gallery.txt";
-              $fp = file_get_contents($gallery);
-              $vet = explode("*", $fp);
-              if (isset($vet[6])) {
-                $images = explode("/", $vet[6]);
-                if (isset($images[1])) {
-                  echo "<center><img src='img/$images[1]' width='600' height='400'></center>";
-                  echo "<div class='desc'>$images[0]</div>";
-                } else {
-                  echo "<center><h2> No image saved</h2></center>";
-                }
-              } else {
-                echo "<center><h2> No image saved</h2></center>";
-              }
-              ?>
-
-            </div>
-
-          </div>
-
-
-
-          <div class="responsive">
-
-            <div class="gallery">
-
-
-              <?php
-              $gallery = "gallery.txt";
-              $fp = file_get_contents($gallery);
-              $vet = explode("*", $fp);
-              if (isset($vet[7])) {
-                $images = explode("/", $vet[7]);
-                if (isset($images[1])) {
-                  echo "<center><img src='img/$images[1]' width='600' height='400'></center>";
-                  echo "<div class='desc'>$images[0]</div>";
-                } else {
-                  echo "<center><h2> No image saved</h2></center>";
-                }
-              } else {
-                echo "<center><h2> No image saved</h2></center>";
-              }
-              ?>
-
-            </div>
-
-          </div>
 
 
           <div class="clearfix"></div>
@@ -369,6 +194,13 @@ if ($_SESSION && $_SESSION['validity'] == 1) {
           </a>
           <a href="chat.php">
             <h3> Chat </h3>
+          </a>
+          <a href="users.php">
+            <h3> Users </h3>
+          </a>
+
+          <a href="friends.php">
+            <h3> Friends </h3>
           </a>
 
           <div class="button">
@@ -476,7 +308,19 @@ if ($_SESSION && $_SESSION['validity'] == 1) {
 
               <h3>Your current status:</h3>
 
-              <p>You don't have any status currently</p>
+              <?php
+              $ip = "localhost";
+              $user = "root";
+              $password = "";
+              $data_base = "test-site";
+              $connection = new mysqli($ip, $user, $password, $data_base);
+              $user = $_SESSION['login'];
+              $action = "SELECT * FROM profile WHERE user='$user'";
+              $result = $connection->query($action);
+              $line = mysqli_fetch_assoc($result);
+              $status = $line['status'];
+              echo $status;
+              ?>
 
             </div>
           <?php

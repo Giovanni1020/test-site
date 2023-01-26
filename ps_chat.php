@@ -67,37 +67,47 @@ if ($_SESSION && $_SESSION['validity'] == 1) {
 
             <div class="leftcolumn">
                 <div class="card">
-                    <center>
-                        <h2> Comment here: </h2>
-                    </center><br>
+
                     <?php
-                    echo "Type your comments here: ";
-                    echo "<form name='form' method='post' action=''>
-                    
-                        <input type='text' name='txt' style='width:70%;'>
-                        
-                         <input type='submit' value='Comment' style='width:29%;'> 
-                        </form>";
-                    $archive = "chat.txt";
-                    if (isset($_POST['txt'])) {
-                        $txt = $_SESSION['login'] . "/" . $_POST['txt'] . "*";
-                        $fp = fopen($archive, "a+");
-                        fwrite($fp, $txt);
-                        fclose($fp);
+                    $friend = $_GET['friend'];
+                    echo " <center><h2> Chat with " . $friend . " </h2> </center><br><br>";
+                    $ip = "localhost";
+                    $user = "root";
+                    $password = "";
+                    $data_base = "test-site";
+                    $connection = new mysqli($ip, $user, $password, $data_base);
+                    $this_user = $_SESSION['login'];
+                    $action = "SELECT * from chat where user_sending='$friend' and user_sent='$this_user' and status='on'";
+                    $result = $connection->query($action);
+                    $rows = mysqli_num_rows($result);
+                    for ($i = 0; $i < $rows; $i++) {
+                        $action2 = "SELECT * from users where username='$friend'";
+                        $result2 = $connection->query($action2);
+                        $line2 = mysqli_fetch_assoc($result2);
+                        $action3 = "SELECT * from chat where user_sending='$friend' and user_sent='$this_user' and status='on'";
+                        $result3 = $connection->query($action3);
+                        $line = mysqli_fetch_assoc($result3);
+                        $pfp = $line2['pfp'];
+                        echo "<a href='friend_pfp.php?friend=$friend'> <img src='img/$pfp'  style='display: block; width: 75; height: 75;border-radius: 45%;border:solid 5px black;'></a>";
+                        echo "<H3> " . $line2['username'] . " Says: </H3> <br>";
+                        echo $line['message'];
+                        echo "<br> <br><br>";
                     }
-                    $archive = "chat.txt";
-                    $fp = fopen($archive, "r");
-                    $messages = fgets($fp);
-                    $value = explode("*", $messages);
-                    $value = array_reverse($value);
-                    for ($i = 1; $i < sizeof($value); $i++) {
-                        $value2 = explode("/", $value[$i]);
-                        echo "<b>" . $value2[0] . " says:</b><br>";
-                        echo "" . $value2[1] . "    - Posted at " . date("d/m/Y") . " ";
-                        echo "<br><br>";
-                    }
+
                     ?>
+                    <?php
+                    echo "<form action='send_message.php?friend=$friend' method='post'>"
+                    ?>
+                    <input type='text' placeholder="Your message" name='message'>
+                    <input type='submit'>
+                    </form>
+                    <br>
                 </div>
+                <?php
+                echo "<center><h2>";
+                echo "<div class='card'> <a href='clear_chat.php?friend=$friend'> Clear the chat </a> </div>";
+                echo " </h2></center>";
+                ?>
             </div>
         <?php
     } else {

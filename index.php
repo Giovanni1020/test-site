@@ -3,7 +3,6 @@
 <head>
 
   <title>Homepage</title>
-
   <link rel="stylesheet" type="text/css" href="css/estilo_form.css">
 
   <link rel="stylesheet" type="text/css" href="css/estilo_css.css">
@@ -11,7 +10,6 @@
   <script src="js/login.js"></script>
 </head>
 
-</head>
 
 <body>
 
@@ -40,6 +38,14 @@
     </a>
     <a href="chat.php">
       <h3> Chat </h3>
+    </a>
+
+    <a href="users.php">
+      <h3> Users </h3>
+    </a>
+
+    <a href="friends.php">
+      <h3> Friends </h3>
     </a>
 
     <div class="button">
@@ -195,7 +201,19 @@
 
           <h3>Your current status:</h3>
 
-          <p>You don't have any status currently</p>
+          <?php
+          $ip = "localhost";
+          $user = "root";
+          $password = "";
+          $data_base = "test-site";
+          $connection = new mysqli($ip, $user, $password, $data_base);
+          $user = $_SESSION['login'];
+          $action = "SELECT * FROM profile WHERE user='$user'";
+          $result = $connection->query($action);
+          $line = mysqli_fetch_assoc($result);
+          $status = $line['status'];
+          echo $status;
+          ?>
 
         </div>
       <?php
